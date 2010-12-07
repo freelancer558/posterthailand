@@ -1,0 +1,383 @@
+body{
+	background-color: 		#B0CDEE;
+	background-image: 		url(http://thaishopdb.com/images/mainbg.png);
+	background-position: 	50% 0px;
+	background-repeat: 		no-repeat;
+	color: 					#666;
+	font-family: 			Tahoma, Helvetica, sans-serif;
+	font-size: 				12px;
+	margin: 				0px;
+	padding:				0px;	
+}
+input{
+	padding-top:			2px;
+}
+@font-face 
+{
+    font-family: Circular;
+    src: url(fonts/Circular.ttf);
+}
+@font-face 
+{
+    font-family: Circular Bold;
+    src: url(fonts/CircularBold.ttf);
+}
+h1,h2,h3,h4,h5,h6{
+	margin:					0px;
+	padding:				0px;
+}
+a{
+	color:					#0369C0;
+}
+a:hover{
+	color:					#ffa12d;
+}
+.product_title{
+	color:					#2a6ebc;
+	padding:				0px 15px;
+}
+.page{
+	background-color: 		white;
+	margin: 				0px auto;
+	padding-bottom: 		10px;
+	width: 					1024px;
+	
+}
+.clear{
+	clear: 					both;
+	display: 				block;
+	overflow: 				hidden;
+	height:					2px;
+	margin:					-10px 0px 20px;
+	border-bottom: 			thin solid #CCC;
+}
+.line{
+	height:					5px;
+	border-bottom:			5px solid #2a6ebc ;
+}
+.even{
+	background-color:		#d9e3eb;
+}
+#dot{
+	height:					2px;
+	border-bottom:			1px dotted #ccc ;
+	margin:					5px;
+}
+#title{
+	color:					#ffa12d;
+	font-family:			Circular Bold;
+	font-size:				18px;
+}
+#sub_title{
+	color:					#ffa12d;
+	font-family:			Circular Bold;
+	font-size:				24px;
+}
+#redstar{
+	color:					red;
+	font-size:				30px;
+}
+
+#warning {
+	background: #FFDFE0;
+	border: 1px solid #F99;
+	color: #C41919;
+	font-size: 12px;
+	margin-bottom: 15px;
+	padding: 5px 0px;
+	text-align: center;
+}
+/*================================  Header =====================================*/
+
+.header{
+	width:					100%;
+	height:					240px;
+	margin:					0px;
+	padding:				0px;
+}
+
+#header_top{
+	overflow:				hidden;
+}
+
+#logo{
+	width:					250px;
+	height:					150px;
+	background-color:		#ffa12d;
+	float:					left;
+}
+
+#header_bottom{
+	width:					100%;
+	height:					67px;
+	font-size:				16px;
+	font-weight:			bold;
+	color:					#FFF;
+	text-shadow:			1px 1px 2px #575a5d;
+}
+
+#menu{
+	height:					46px;
+	border-bottom:			5px solid #2a6ebc ;
+}
+
+#menu #post_here div{
+	background: url(images/posterFree.png) no-repeat;
+	width:					135px;
+	height:					135px;
+	float:					left;
+	margin-left: 			15px;
+	margin-right: 			-31px;
+	margin-top: 			-53px;
+}
+#menu #post_here div:hover{
+	background: url(images/posterFree_hover.png) no-repeat;
+}
+#header_bottom ul#header_right_menu{
+	float:					left;
+}
+#header_bottom ul#header_right_menu li a,
+#header_bottom ul#header_left_menu li a{
+	color:					white;
+	text-decoration:		none;
+}
+#header_bottom ul#header_right_menu li a:hover,
+#header_bottom ul#header_left_menu li a:hover{
+	text-shadow:			#b5b7b5 1px 1px 2px;
+}
+
+#header_bottom ul#header_left_menu{
+	float:					right;
+}
+
+#header_bottom ul#header_right_menu li,
+#header_bottom ul#header_left_menu li{
+	background-color:		#2a6ebc;
+	list-style:				none;
+	float:					left;
+	margin:					0px 5px;
+	border:					thin solid #2a6ebc ;
+	padding:				5px 10px;
+	cursor:					pointer;
+}
+
+#logined{
+	color: #2A6EBC;
+	margin-left: 25px;
+	margin-top: 25px;
+	position: absolute;
+	text-shadow: #575A5D 0px -1px 0px;
+}
+
+/*================================  Content =====================================*/
+
+.content{
+	overflow:				hidden;
+}
+#wrap_top{
+	overflow:				hidden;
+}
+#wrap_top #wrap_top_left{
+	float:					left;
+	width:					750px;
+	padding-left:			15px;
+}
+
+
+#post{
+	overflow:				hidden;
+}
+
+#wrap_bottom{
+	
+}
+#wrap_bottom_left{
+	width:					650px;
+	float:					left;
+}
+
+#post #post_img{
+	float:					left;
+	margin:					6px;
+	background-color:		#d9b3de;
+	padding:				2px;
+	border:					1px solid gray;
+	width:					48px;
+	height:					48px;
+}
+#post #post_title{
+	margin:					10px;
+	width:					550px;
+	float:					right;
+}
+#post #post_header{
+	color:					#2a6ebc;
+	font-weight:			bold;
+	font-size:				14px;
+	margin:					8px 0px;
+}
+#post #post_header #price{
+	color:					red;
+}
+#post #post_detial{
+	text-indent:			30px;
+}
+
+#wrap_bottom_right{
+	width:					340px;
+	overflow:				hidden;
+	background-color:		#d9e3eb;
+	float:					right;
+	margin-right:			10px;
+}
+
+#cat_left{
+	float:					left;
+	overflow:				hidden;
+}
+#cat_right{
+	float:					right;
+	overflow:				hidden;
+}
+
+#signup_form{
+	float:					left;
+}
+#regist_nav{
+	float:					right;
+	border-left:			thin dashed #CCC;
+	width:					270px;
+	padding:				10px;
+}
+#regist_nav p{
+	text-indent:			30px;
+}
+
+.none_underline{
+	text-decoration:		none;
+}
+
+#joinus{
+	background:				url(images/joius.png) no-repeat;
+	color: 					white;
+	font-size: 				20px;
+	height: 				80px;
+	padding-left: 			8px;
+	padding-top: 			25px;
+	text-shadow: 			gray 1px 1px 3px;
+}
+
+#joinus:hover{
+	background:				url(images/joius_hover.png) no-repeat;
+	text-shadow:			#b5b7b5 1px 1px 2px;
+}
+
+#product_detail{
+	overflow:				hidden;
+	margin-right:			10px;
+	margin-bottom:			10px;
+	clear:					both;
+}
+#product_detail_left{
+	float:					left;
+	overflow:				hidden;
+}
+#product_detail_right{
+	float:					right;
+	overflow:				hidden;
+	width:					125px;
+	background-color:		#D9E3EB;
+	padding:				5px;
+	height:					270px;
+}
+
+#show_img{
+	float:					left;
+	overflow:				hidden;
+	width:					520px;
+}
+#show_detail{
+	float:					right;
+	overflow:				hidden;
+	font-size:				12px;
+	padding-top:			5px;
+}
+#show_detail #pdetail{
+	margin-bottom:			10px;
+	border-bottom:			thin dashed #ccc;
+}
+#show_detail #pdetail div{
+	font-weight:			bold;
+	text-align:				right;
+	overflow:				hidden;
+	width:					110px;
+	float:					left;
+	margin-right:			5px;
+}
+
+.catlist{
+	list-style:				none;
+	line-height: 			25px;
+	padding-left: 10px;
+}
+.catlist li{
+	border-bottom:			thin solid #ccc;
+}
+.catlist li a{
+	text-decoration:		none;
+}
+
+
+#category{
+	overflow:				hidden;
+	width:					315px;
+	padding:				5px;
+	margin-bottom:			10px;
+}
+#category:hover{
+	background-color:		#d9e3eb;
+	border-bottom-left-radius: 4px 4px;
+	border-bottom-right-radius: 4px 4px;
+	border-top-left-radius: 4px 4px;
+	border-top-right-radius: 4px 4px;
+}
+#category #cat_img{
+	float:					left;
+	padding:				1px;
+	border:					1px solid gray;
+	width:					48px;
+	height:					48px;
+	margin-right:			5px;
+	margin-top:				5px;
+}
+#category #cat_title{
+	overflow:				hidden;
+}
+#category #cat_title #cat_header{
+	font-size:				14px;
+	font-weight:			bold;
+}
+#post_cat a{
+	text-decoration:		none;
+}
+/* =============================   Map Canvas ==================================*/
+#map_canvas{
+	width: 					340px; 
+	height: 				550px; 
+	position: 				relative; 
+	background-color: 		rgb(229, 227, 223); 
+}
+/*================================  Footer =====================================*/
+
+.footer{
+	background-color:		#d9e3eb;
+	padding:				10px;
+	margin:					10px 10px 0px 10px;
+}
+
+#footer_top{
+
+}
+#footer_bottom{
+
+}

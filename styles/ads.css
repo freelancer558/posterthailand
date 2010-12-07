@@ -1,0 +1,120 @@
+
+#header_ads{
+	width:					750px;
+	height:					120px;
+	background-color:		#a8c1e3;
+	float:					right;
+	margin-top:				15px;
+}
+
+#ads_728x90{
+	background-color:		#6e99d4;
+	width:					728px;
+	height:					90px;
+	float:					right;
+	margin:					16px 0px 16px;
+}
+
+
+
+
+#wrap_ads{
+	width:					750px;
+	height:					120px;
+	background-color:		#a8c1e3;
+	float:					right;
+	margin-top:				15px;
+	margin-bottom:			15px;
+}
+
+#wrap_728x90{
+	background-color:		#6e99d4;
+	width:					728px;
+	height:					90px;
+	float:					right;
+	margin:					16px 0px;
+}
+#wrap_top #wrap_top_right{
+	float:					right;
+	width:					230px;
+	margin-right:			10px;
+}
+#ads_300x240px{
+	padding:				10px 0px 10px 10px;
+	margin-bottom:			15px;
+	overflow:				hidden;
+}
+#ads_300x240px #ads_300x240_1{
+	float:					left;
+	margin-left:			30px;
+	width:					330px;
+	height:					240px;
+	background-color:		#ffa12d;
+}
+#ads_300x240px #ads_300x240_2{
+	float:					right;
+	margin-right:			30px;
+	width:					330px;
+	height:					240px;
+	background-color:		#ffa12d;
+}
+
+#special_ads,
+#suggest_ads,
+#wrap_bottom{
+	margin:					15px 0px;
+	padding-left:			15px;
+	overflow:				hidden;
+}
+#left_ads_125x125{
+	overflow:				hidden;
+	padding:				10px;
+}
+
+#sp_box{
+	float:					left;
+	margin-right:			15px;
+}
+#sp_box #sp_img{
+	background-color:		#d9b3de;
+	padding:				2px;
+	border:					1px solid gray;
+	width:					125px;
+	height:					125px;
+}
+#sp_box #sp_title{
+	margin-top:				5px;
+	margin-bottom:			5px;
+	width:					125px;
+}
+/* ===============================  left Ads ===================================*/
+#wrap_bottom_right #ads_160x600_1,
+#wrap_bottom_right #ads_160x600_2{
+	width:					160px;
+	height:					600px;
+	margin:					5px;
+	background-color:		#a8c1e3;
+	float:					left;
+}
+
+#left_ads_125x125 #left_125{
+	float:					left;
+	margin-left:			23px;
+}
+#left_ads_125x125 #right_125{
+	float:					right;
+	margin-right:			24px;
+}	
+#left_ads_125x125 #left_125 #left_125_box #left_125_img,
+#left_ads_125x125 #right_125 #left_125_box #left_125_img{
+	background-color:		#d9b3de;
+	padding:				2px;
+	border:					1px solid gray;
+	width:					125px;
+	height:					125px;
+	margin-bottom:			10px;
+}
+
+/*=================================  Annoucement Ads ==========================*/
+
+
