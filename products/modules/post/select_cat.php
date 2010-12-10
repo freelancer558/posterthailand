@@ -29,6 +29,8 @@
 <script type="text/javascript" src="<?php echo WEB_URL;?>/scripts/jquery/jwysiwyg/jquery.simplemodal.js"></script>
 <script type="text/javascript" src="<?php echo WEB_URL;?>/scripts/jquery/captcha/jquery.realperson.js"></script>
 <script type="text/javascript" src="<?php echo WEB_URL;?>/scripts/jquery/jquery.bestupper.min.js"></script>
+<script type="text/javascript" src="<?php echo WEB_URL;?>/scripts/jquery/jquery.ajaxupload.3.5.js"></script>
+
 
 <script type="text/javascript">
 $(function(){
@@ -63,15 +65,15 @@ $(function(){
 	
 	$('#has_warranty').click(function(){
 		if($(this).attr('checked') == false){
-			$('#_year').attr({'disabled':'','class':'validate[required]'});
-			$('#_month').attr({'disabled':'','class':'validate[required]'});
+			$('#w_year').attr({'disabled':'','class':'validate[required]'});
+			$('#w_month').attr({'disabled':'','class':'validate[required]'});
 		}
 	});
 	
 	$('#no_warranty').click(function(){
 		if($(this).attr('checked') == false){
-			$('#_year').attr({'disabled':'disabled','class':''});
-			$('#_month').attr({'disabled':'disabled','class':''});
+			$('#w_year').attr({'disabled':'disabled','class':''});
+			$('#w_month').attr({'disabled':'disabled','class':''});
 		}
 	});
 	
@@ -93,6 +95,7 @@ $(function(){
 					
 				}else{
 					$('#loading').html('<img src="../styles/images/tick.png" width="32"/>');
+					return true;
 				}
 								
 			}			   
@@ -120,6 +123,7 @@ $(function(){
 						
 					}else{
 						$('#loading').html('<img src="../styles/images/tick.png" width="32"/>');
+						$('#post_form').submit();
 					}
 									
 				}			   
@@ -128,6 +132,34 @@ $(function(){
 	});
 	
 	$('#captcha').bestupper(); 
+	
+	
+	var btnUpload=$('#upload');
+		var status=$('#status');
+		new AjaxUpload(btnUpload, {
+			action: '../upload-file.php',
+			name: 'uploadfile',
+			onSubmit: function(file, ext){
+				 if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){ 
+                    // extension is not allowed 
+					status.text('Only JPG, PNG or GIF files are allowed');
+					return false;
+				}
+				status.text('Uploading...');
+			},
+			onComplete: function(file, response){
+				//On completion clear the status
+				status.text('');
+				//Add uploaded file to list
+				var imgstatus = response.split(',');
+				
+				if(imgstatus[0]==="success"){
+					$('<li></li>').appendTo('#files').html('<img src="../uploads/'+imgstatus[1]+'" alt="" /><input type="hidden" name="img[]" value="'+imgstatus[1]+'"/>').addClass('success');
+				} else{
+					$('<li></li>').appendTo('#files').text(imgstatus[1]).addClass('error');
+				}
+			}
+		});
 	
 });
 </script>
@@ -231,7 +263,7 @@ $(function(){
 @import "<?php echo WEB_URL;?>/styles/captcha/jquery.realperson.css";
 	label { display: inline-block; width: 20%; }
 	.realperson-challenge { display: inline-block;}
-	.realperson-text{ color:#DDD;}
+	.realperson-text{ color:#CCC;}
 	.jqTransformSafari .jqTransformInputInner div{margin:0px 2px;}
 </style>
 </head>
@@ -418,7 +450,7 @@ $(function(){
 				?>
                 	<div id="title"><h1>กรอกข้อมูลสำหรับลงประกาศ</h1></div>
                     <div class="clear"></div>
-                	<form id="post_form" action="" method="post" enctype="multipart/form-data">
+                	<form id="post_form" action="?m=post&p=check_post" method="post" enctype="multipart/form-data">
                 	  <table width="630" cellspacing="2" cellpadding="5" border="0" align="center">
                 	    <tbody>
                 	      <tr>
@@ -431,7 +463,7 @@ $(function(){
 									$rs = $db->fetch($catq);
 								?>
                             	<strong><span id="selectcat" value="<?php echo $rs['cat_id'];?>"><?php echo $_GET['c'];?></span></strong> [ <a href="<?php echo WEB_URL;?>/products/?m=post&p=select_cat">เปลี่ยนหมวดหมู่</a> ]
-
+								<input type="hidden" name="cat_name" id="cat_name" value="<?php echo $rs['cat_id'].','.$_GET['c'];?>" />
                            	</td>
               	          </tr>
                 	      <tr>
@@ -443,21 +475,24 @@ $(function(){
 							if(!isset($_GET['sc'])){
                                 $getsubcat = $db->select_query('SELECT * FROM subcat WHERE cat_id = '.$rs['cat_id']);
 	
-								$msg = '<select id="subcat">';
+								$msg = '<select name="subcat" id="subcat">';
 								while($rs = $db->fetch($getsubcat)){
-									$msg .= '<option value="'.$rs['sub_id'].'">'.$rs['sub_name'].'</option>';
+									$msg .= '<option value="'.$rs['sub_id'].','.$rs['sub_name'].'">'.$rs['sub_name'].'</option>';
 								}
 								$msg .= '</select>';
 								echo $msg;
 							}else{
 								echo '<strong>'.$_GET['sc'].'</strong>';
+								echo '<input type="hidden" name="subcat" id="subcat" value="'.$_GET['sc'].'"/>';
 							}
 							?>
                            	</td>
                	          </tr>
                           <tr>
                 	        <td align="right"><strong><span style="color:red;">*</span>สถานที่ขายสินค้า:</strong></td>
-                	        <td colspan="6"><input type="text" name="p_place" id="p_place" size="55" align="middle" title="สถานที่ ที่ท่านขายสินค้า" class="vtip validate[required]" /></td>
+                	        <td colspan="6">
+                            	<input type="text" name="p_place" id="p_place" size="55" align="middle" title="สถานที่ ที่ท่านขายสินค้า" class="vtip validate[required]" />
+                           	</td>
               	        </tr>
                 	      <tr>
                 	        <td align="right"><strong><span style="color:red;">*</span>หัวข้อ:</strong></td>
@@ -467,12 +502,15 @@ $(function(){
                 	        <td valign="top"><div align="right"><strong><span style="color:red;">*</span>รายละเอียด:</strong><br />
               	          </div></td>
                 	        <td colspan="6" valign="top">
-                            <textarea name="jw" id="p_detail" rows="15" cols="60" class="validate[required]"></textarea>
+                            <textarea name="jw" id="p_detail" rows="15" cols="72"></textarea>
                             </td>
               	        </tr>
                 	      <tr>
-                	        <td align="right"><strong>  รูปภาพ:</strong></td>
-                	        <td colspan="6"><strong>โพสรูปได้เฉพาะสมาชิกเท่านั้นค่ะ</strong></td>
+                	        <td align="right" valign="top"><strong>  รูปภาพ:</strong></td>
+                	        <td colspan="6">
+                           	  <div id="upload" ><span>อัพโหลดรูป</span></div><span id="status" ></span>
+								<ul id="files" ></ul>
+                            </td>
               	        </tr>
                 	      <tr>
                 	        <td align="right" width="96">
@@ -500,7 +538,7 @@ $(function(){
                          <tr>
                 	        <td align="right"><span style="color:red;">*</span><strong>รับประกัน:</strong></td>
                 	        <td width="61"><div align="right">
-                	          <input name="warranty" type="radio" id="no_warranty" checked="checked" />
+                	          <input type="radio" name="warranty" id="no_warranty" value="no_warranty" checked="checked" />
               	          </div>
                	            </td>
                 	        <td width="98"><div align="left">ไม่มีประกัน</div></td>
@@ -509,16 +547,16 @@ $(function(){
                 	      <tr>
                 	        <td align="right">&nbsp;</td>
                 	        <td><div align="right">
-                	          <input type="radio" name="warranty" id="has_warranty" />
+                	          <input type="radio" name="warranty" id="has_warranty" value="has_warranty" />
               	          </div>
                	            </td>
                 	        <td><div align="left">มีประกัน</div></td>
                 	        <td width="45"><div align="right">ปี:</div></td>
                 	        <td width="18">
-               	            <input type="text" name="_year" id="_year" size="10" disabled="disabled"/></td>
+               	            <input type="text" name="w_year" id="w_year" size="10" disabled="disabled"/></td>
                 	        <td width="87"><div align="right">เดือน:</div></td>
                 	        <td>
-               	            <input type="text" name="_month" id="_month" size="10" disabled="disabled"/></td>
+               	            <input type="text" name="w_month" id="w_month" size="10" disabled="disabled"/></td>
               	          </tr>
                 	      <tr>
                 	        <td align="right"><span style="color:red;">*</span><strong>ราคา:</strong></td>
@@ -594,14 +632,14 @@ $(function(){
                 	        <td colspan="6"><table width="100%" cellpadding="0">
                 	          <tbody>
                 	            <tr>
-                	              <td width="28%"><input name="key1" type="text" id="key1" /></td>
-                	              <td width="28%"><input name="key2" type="text" id="key2" /></td>
-                	              <td width="44%"><input name="key3" type="text" id="key3" /></td>
+                	              <td width="28%"><input name="tag[]" type="text" /></td>
+                	              <td width="28%"><input name="tag[]" type="text" /></td>
+                	              <td width="44%"><input name="tag[]" type="text" /></td>
               	              </tr>
                 	            <tr>
-                	              <td><input name="key4" type="text" id="key4" /></td>
-                	              <td><input name="key5" type="text" id="key5" /></td>
-                	              <td><input name="key6" type="text" id="key6" /></td>
+                	              <td><input name="tag[]" type="text" /></td>
+                	              <td><input name="tag[]" type="text" /></td>
+                	              <td><input name="tag[]" type="text" /></td>
               	              </tr>
               	            </tbody>
               	          </table></td>
@@ -618,145 +656,188 @@ $(function(){
                 	        <td colspan="7" align="right" valign="top"><table width="650" border="0" cellspacing="2" cellpadding="5">
                 	          <tr>
                 	            <td colspan="4"><div id="sub_title">ข้อมูลผู้ประลงประกาศ</div></td>
+                                <?php
+                                	$getm = $db->select_query('SELECT * FROM members WHERE username = "'.$_SESSION['usr'].'"');
+									$mrs = $db->fetch($getm);
+								?>
               	            </tr>
                 	          <tr>
                 	            <td width="106"><div align="right"><strong>Username</strong> :</div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="user" size="20" maxlength="50" value="" title="เฉพาะสมาชิก" />
-              	              </div></td>
-                	            <td width="110" align="center"><div align="right"><strong>Password :</strong></div></td>
-                	            <td width="212" align="center"><div align="left">
-                	              <input type="password" name="pwd" size="20" maxlength="50" value="" />
-              	              </div></td>
-              	            </tr>
+                	            <td>
+                                	<div align="left"><?php echo $mrs['username'];?></div>
+                              	</td>
+                	            <td width="110"><div align="right"><strong><span style="color:red;">*</span>ชื่อผู้ประกาศ:</strong></div></td>
+                	            <td width="212">
+                                	<div align="left"> 
+										<?php echo $mrs['poster_name'];?>
+                                   	</div>
+                                    <input type="hidden" name="poster_name" id="poster_name" value="<?php echo $mrs['poster_name'];?>" />
+                               	</td>
+               	              </tr>
                 	          <tr>
-                	            <td><div align="right"><strong><span style="color:red;">*</span>ชื่อผู้ประกาศ:</strong></div></td>
-                	            <td><div align="left">
-                	              <input name="name" type="text" value="" size="20" maxlength="100"  title="ชื่อที่ผู้เข้าดูสินค้าจะเห็นว่าประกาศจากใคร" id="poster_name" class="vtip validate[required]" />
-              	              </div></td>
-                	            <td align="center"><div align="right"><strong>ชื่อร้านค้า :</strong></div></td>
-                	            <td align="center"><div align="left"><strong>
-                	              <input type="text" name="store_name2" id="store_name2"  title="ชื่อร้านค้าที่ขายสินค้านี้อยู่ หรือชื่อร้านที่ผู้เข้าชมสามารถติดต่อได้สะดวก" class="vtip" />
+                	            <td><div align="right"><strong>ชื่อร้านค้า :</strong></div></td>
+                	            <td colspan="3"><div align="left"><strong>
+                	              <?php
+                                    	empty($mrs['company_name'])? print '<input type="text" name="store_name" id="store_name"  title="ชื่อร้านค้าที่ขายสินค้านี้อยู่ หรือชื่อร้านที่ผู้เข้าชมสามารถติดต่อได้สะดวก" class="vtip" size="55"/>' : print $mrs['company_name'];
+									?>
               	              </strong></div></td>
-              	            </tr>
+               	              </tr>
                 	          <tr>
-                	            <td><div align="right"><strong><span style="color:red;">*</span>ที่อยู่ :</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="contact" id="contact" size="20" class="validate[required]"/>
-              	              </div></td>
+                	            <td>
+                                	<div align="right"><strong><span style="color:red;">*</span>ที่อยู่ :</strong></div>
+                               	</td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+                                    	empty($mrs['address'])?print'<input type="text" name="address" id="address" size="20" class="validate[required]"/>':print $mrs['address'];
+									?>
+              	              		</div>
+                               	</td>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>ตำบล/แขวง:</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="tumbon2" id="tumbon" class="validate[required]"/>
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+                                    	empty($mrs['bumcon'])? print '<input type="text" name="tumbon" id="tumbon" class="validate[required]"/>': print $mrs['tumbon'];
+									?>
+              	              		</div>
+                              	</td>
               	            </tr>
                 	          <tr>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>อำเภอ :</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="district2" id="district2" class="validate[required]"/>
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+                                    	empty($mrs['amphur']) ? print '<input type="text" name="amphur" id="amphur" class="validate[required]"/>': print $mrs['amphur'];
+									?>
+              	              		</div>
+                              	</td>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>จังหวัด:</strong></div></td>
-                	            <td><div align="left">
-                	              <select name="city" id="city">
-                	                <option value>เลือกจังหวัด</option>
-                	                <option value="กระบี่">กระบี่ </option>
-                	                <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
-                	                <option value="กาญจนบุรี">กาญจนบุรี </option>
-                	                <option value="กาฬสินธุ์">กาฬสินธุ์ </option>
-                	                <option value="กำแพงเพชร">กำแพงเพชร </option>
-                	                <option value="ขอนแก่น">ขอนแก่น</option>
-                	                <option value="จันทบุรี">จันทบุรี</option>
-                	                <option value="ฉะเชิงเทรา">ฉะเชิงเทรา </option>
-                	                <option value="ชัยนาท">ชัยนาท </option>
-                	                <option value="ชัยภูมิ">ชัยภูมิ </option>
-                	                <option value="ชุมพร">ชุมพร </option>
-                	                <option value="ชลบุรี">ชลบุรี </option>
-                	                <option value="เชียงใหม่">เชียงใหม่ </option>
-                	                <option value="เชียงราย">เชียงราย </option>
-                	                <option value="ตรัง">ตรัง </option>
-                	                <option value="ตราด">ตราด </option>
-                	                <option value="ตาก">ตาก </option>
-                	                <option value="นครนายก">นครนายก </option>
-                	                <option value="นครปฐม">นครปฐม </option>
-                	                <option value="นครพนม">นครพนม </option>
-                	                <option value="นครราชสีมา">นครราชสีมา </option>
-                	                <option value="นครศรีธรรมราช">นครศรีธรรมราช </option>
-                	                <option value="นครสวรรค์">นครสวรรค์ </option>
-                	                <option value="นราธิวาส">นราธิวาส </option>
-                	                <option value="น่าน">น่าน </option>
-                	                <option value="นนทบุรี">นนทบุรี </option>
-                	                <option value="บุรีรัมย์">บุรีรัมย์</option>
-                	                <option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์ </option>
-                	                <option value="ปทุมธานี">ปทุมธานี </option>
-                	                <option value="ปราจีนบุรี">ปราจีนบุรี </option>
-                	                <option value="ปัตตานี">ปัตตานี </option>
-                	                <option value="พะเยา">พะเยา </option>
-                	                <option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา </option>
-                	                <option value="พังงา">พังงา </option>
-                	                <option value="พิจิตร">พิจิตร </option>
-                	                <option value="พิษณุโลก">พิษณุโลก </option>
-                	                <option value="เพชรบุรี">เพชรบุรี </option>
-                	                <option value="เพชรบูรณ์">เพชรบูรณ์ </option>
-                	                <option value="แพร่">แพร่ </option>
-                	                <option value="พัทลุง">พัทลุง </option>
-                	                <option value="ภูเก็ต">ภูเก็ต </option>
-                	                <option value="มหาสารคาม">มหาสารคาม </option>
-                	                <option value="มุกดาหาร">มุกดาหาร </option>
-                	                <option value="แม่ฮ่องสอน">แม่ฮ่องสอน </option>
-                	                <option value="ยโสธร">ยโสธร </option>
-                	                <option value="ยะลา">ยะลา </option>
-                	                <option value="ร้อยเอ็ด">ร้อยเอ็ด </option>
-                	                <option value="ระนอง">ระนอง </option>
-                	                <option value="ระยอง">ระยอง </option>
-                	                <option value="ราชบุรี">ราชบุรี</option>
-                	                <option value="ลพบุรี">ลพบุรี </option>
-                	                <option value="ลำปาง">ลำปาง </option>
-                	                <option value="ลำพูน">ลำพูน </option>
-                	                <option value="เลย">เลย </option>
-                	                <option value="ศรีสะเกษ">ศรีสะเกษ</option>
-                	                <option value="สกลนคร">สกลนคร</option>
-                	                <option value="สงขลา">สงขลา </option>
-                	                <option value="สมุทรสาคร">สมุทรสาคร </option>
-                	                <option value="สมุทรปราการ">สมุทรปราการ </option>
-                	                <option value="สมุทรสงคราม">สมุทรสงคราม </option>
-                	                <option value="สระแก้ว">สระแก้ว </option>
-                	                <option value="สระบุรี">สระบุรี </option>
-                	                <option value="สิงห์บุรี">สิงห์บุรี </option>
-                	                <option value="สุโขทัย">สุโขทัย </option>
-                	                <option value="สุพรรณบุรี">สุพรรณบุรี </option>
-                	                <option value="สุราษฎร์ธานี">สุราษฎร์ธานี </option>
-                	                <option value="สุรินทร์">สุรินทร์ </option>
-                	                <option value="สตูล">สตูล </option>
-                	                <option value="หนองคาย">หนองคาย </option>
-                	                <option value="หนองบัวลำภู">หนองบัวลำภู </option>
-                	                <option value="อำนาจเจริญ">อำนาจเจริญ </option>
-                	                <option value="อุดรธานี">อุดรธานี </option>
-                	                <option value="อุตรดิตถ์">อุตรดิตถ์ </option>
-                	                <option value="อุทัยธานี">อุทัยธานี </option>
-                	                <option value="อุบลราชธานี">อุบลราชธานี</option>
-                	                <option value="อ่างทอง">อ่างทอง </option>
-                	                <option value="อื่นๆ">อื่นๆ</option>
-              	                </select>
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+										$province_list = '
+										<select name="province" id="province">
+											<option value>เลือกจังหวัด</option>
+											<option value="กระบี่">กระบี่ </option>
+											<option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+											<option value="กาญจนบุรี">กาญจนบุรี </option>
+											<option value="กาฬสินธุ์">กาฬสินธุ์ </option>
+											<option value="กำแพงเพชร">กำแพงเพชร </option>
+											<option value="ขอนแก่น">ขอนแก่น</option>
+											<option value="จันทบุรี">จันทบุรี</option>
+											<option value="ฉะเชิงเทรา">ฉะเชิงเทรา </option>
+											<option value="ชัยนาท">ชัยนาท </option>
+											<option value="ชัยภูมิ">ชัยภูมิ </option>
+											<option value="ชุมพร">ชุมพร </option>
+											<option value="ชลบุรี">ชลบุรี </option>
+											<option value="เชียงใหม่">เชียงใหม่ </option>
+											<option value="เชียงราย">เชียงราย </option>
+											<option value="ตรัง">ตรัง </option>
+											<option value="ตราด">ตราด </option>
+											<option value="ตาก">ตาก </option>
+											<option value="นครนายก">นครนายก </option>
+											<option value="นครปฐม">นครปฐม </option>
+											<option value="นครพนม">นครพนม </option>
+											<option value="นครราชสีมา">นครราชสีมา </option>
+											<option value="นครศรีธรรมราช">นครศรีธรรมราช </option>
+											<option value="นครสวรรค์">นครสวรรค์ </option>
+											<option value="นราธิวาส">นราธิวาส </option>
+											<option value="น่าน">น่าน </option>
+											<option value="นนทบุรี">นนทบุรี </option>
+											<option value="บุรีรัมย์">บุรีรัมย์</option>
+											<option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์ </option>
+											<option value="ปทุมธานี">ปทุมธานี </option>
+											<option value="ปราจีนบุรี">ปราจีนบุรี </option>
+											<option value="ปัตตานี">ปัตตานี </option>
+											<option value="พะเยา">พะเยา </option>
+											<option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา </option>
+											<option value="พังงา">พังงา </option>
+											<option value="พิจิตร">พิจิตร </option>
+											<option value="พิษณุโลก">พิษณุโลก </option>
+											<option value="เพชรบุรี">เพชรบุรี </option>
+											<option value="เพชรบูรณ์">เพชรบูรณ์ </option>
+											<option value="แพร่">แพร่ </option>
+											<option value="พัทลุง">พัทลุง </option>
+											<option value="ภูเก็ต">ภูเก็ต </option>
+											<option value="มหาสารคาม">มหาสารคาม </option>
+											<option value="มุกดาหาร">มุกดาหาร </option>
+											<option value="แม่ฮ่องสอน">แม่ฮ่องสอน </option>
+											<option value="ยโสธร">ยโสธร </option>
+											<option value="ยะลา">ยะลา </option>
+											<option value="ร้อยเอ็ด">ร้อยเอ็ด </option>
+											<option value="ระนอง">ระนอง </option>
+											<option value="ระยอง">ระยอง </option>
+											<option value="ราชบุรี">ราชบุรี</option>
+											<option value="ลพบุรี">ลพบุรี </option>
+											<option value="ลำปาง">ลำปาง </option>
+											<option value="ลำพูน">ลำพูน </option>
+											<option value="เลย">เลย </option>
+											<option value="ศรีสะเกษ">ศรีสะเกษ</option>
+											<option value="สกลนคร">สกลนคร</option>
+											<option value="สงขลา">สงขลา </option>
+											<option value="สมุทรสาคร">สมุทรสาคร </option>
+											<option value="สมุทรปราการ">สมุทรปราการ </option>
+											<option value="สมุทรสงคราม">สมุทรสงคราม </option>
+											<option value="สระแก้ว">สระแก้ว </option>
+											<option value="สระบุรี">สระบุรี </option>
+											<option value="สิงห์บุรี">สิงห์บุรี </option>
+											<option value="สุโขทัย">สุโขทัย </option>
+											<option value="สุพรรณบุรี">สุพรรณบุรี </option>
+											<option value="สุราษฎร์ธานี">สุราษฎร์ธานี </option>
+											<option value="สุรินทร์">สุรินทร์ </option>
+											<option value="สตูล">สตูล </option>
+											<option value="หนองคาย">หนองคาย </option>
+											<option value="หนองบัวลำภู">หนองบัวลำภู </option>
+											<option value="อำนาจเจริญ">อำนาจเจริญ </option>
+											<option value="อุดรธานี">อุดรธานี </option>
+											<option value="อุตรดิตถ์">อุตรดิตถ์ </option>
+											<option value="อุทัยธานี">อุทัยธานี </option>
+											<option value="อุบลราชธานี">อุบลราชธานี</option>
+											<option value="อ่างทอง">อ่างทอง </option>
+											<option value="อื่นๆ">อื่นๆ</option>
+										</select>
+										';
+                                    	empty($mrs['province'])? print $province_list: print $mrs['province'];
+									?>
+                                      
+              	              		</div>
+                              	</td>
               	            </tr>
                 	          <tr>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>ไปรษณีย์:</strong></div></td>
-                	            <td><div align="left">
-                	              <input name="postcode" type="text" id="postcode" maxlength="5" class="validate[required]" />
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+                                    	empty($mrs['postcode']) ? print '<input name="postcode" type="text" id="postcode" maxlength="5" class="validate[required]" />': print $mrs['postcode'];
+									?>
+              	              		</div>
+                              	</td>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>มือถือ:</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="mobile" id="mobile" size="20" maxlength="50" class="validate[required]" />
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+										empty($mrs['mobile_no'])? print '<input type="text" name="mobile" id="mobile" size="20" maxlength="50" class="validate[required]" />': print $mrs['mobile_no'];
+                                    ?>	
+              	              		</div>
+                              	</td>
               	            </tr>
                 	          <tr>
                 	            <td><div align="right"><strong>เบอร์ร้าน :</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="tel" size="20" maxlength="50" />
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                	              	<?php
+                                    	empty($mrs['phone'])? print '<input type="text" name="tel" size="20" maxlength="50" />': print $mrs['phone'];
+									?>
+              	              		</div>
+                              	</td>
                 	            <td><div align="right"><strong>Fax :</strong></div></td>
-                	            <td><div align="left">
-                	              <input type="text" name="fax2" size="20" maxlength="50" />
-              	              </div></td>
+                	            <td>
+                                	<div align="left">
+                                    <?php
+										empty($mrs['fax'])? print '<input type="text" name="fax2" size="20" maxlength="50" />': print $mrs['fax'];
+                                    ?>
+              	              		</div>
+                              	</td>
               	            </tr>
                 	          <tr>
                 	            <td><div align="right"><strong><span style="color:red;">*</span>Security code:</strong></div></td>

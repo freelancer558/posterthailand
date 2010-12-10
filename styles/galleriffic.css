@@ -56,7 +56,6 @@ div.slideshow a.advance-link:hover, div.slideshow a.advance-link:active, div.sli
 }
 div.slideshow img {
 	border: 1px solid #CCC;
-	height: 270px;
 	margin-top: -10px;
 	vertical-align: middle;
 	width: 330px;
@@ -109,6 +108,8 @@ a.thumb:focus {
 ul.thumbs img {
 	border: none;
 	display: block;
+	max-width: 75px;
+	max-height:75px;
 }
 div.pagination {
 	display:none;

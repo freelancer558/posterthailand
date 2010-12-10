@@ -28,6 +28,7 @@ if($_POST['login']){
 	if($n > 0){
 		$_SESSION['usr']	= $rs['username'];
 		$_SESSION['ssid'] 	= session_id();
+		$_SESSION['email']	= $rs['email'];
 		if($rm == 'true'){
 			$_SESSION['lifetime'] = 3600*24*365;
 			$db->select_query('INSERT INTO session(ss_user,session,ss_endtime,ssdate) VALUES("'.$_SESSION['usr'].'","'.$_SESSION['ssid'].'","'.$_SESSION['lifetime'].'","'.time().'")');

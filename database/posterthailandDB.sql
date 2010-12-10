@@ -160,6 +160,24 @@ CREATE TABLE `products` (
 
 /*Data for the table `products` */
 
+/*Table structure for table `products_img` */
+
+DROP TABLE IF EXISTS `products_img`;
+
+CREATE TABLE `products_img` (
+  `img_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NOT NULL,
+  `img1` varchar(50) DEFAULT NULL,
+  `img2` varchar(50) DEFAULT NULL,
+  `img3` varchar(50) DEFAULT NULL,
+  `img4` varchar(50) DEFAULT NULL,
+  `img5` varchar(50) DEFAULT NULL,
+  `img6` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`img_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `products_img` */
+
 /*Table structure for table `session` */
 
 DROP TABLE IF EXISTS `session`;
@@ -171,11 +189,11 @@ CREATE TABLE `session` (
   `ss_endtime` varchar(100) DEFAULT NULL COMMENT 'ระยะเวลาที่ของ Session',
   `ssdate` varchar(20) DEFAULT NULL COMMENT 'Session Date Time',
   PRIMARY KEY (`ssid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `session` */
 
-insert  into `session`(`ssid`,`ss_user`,`session`,`ss_endtime`,`ssdate`) values (1,'tester1','e3dad17172c072437cd2104acd824e47','31536000','1291476799'),(2,'tester1','080281dad55517b81e9462bb8496ce18','31536000','1291518790'),(3,'tester1','0acc9f78e77fc7c1a4238663e79b266b','31536000','1291690267'),(4,'tester1','32ad00ea43617fcf20670516b054ed1a','31536000','1291740000');
+insert  into `session`(`ssid`,`ss_user`,`session`,`ss_endtime`,`ssdate`) values (1,'tester1','e3dad17172c072437cd2104acd824e47','31536000','1291476799'),(2,'tester1','080281dad55517b81e9462bb8496ce18','31536000','1291518790'),(3,'tester1','0acc9f78e77fc7c1a4238663e79b266b','31536000','1291690267'),(4,'tester1','32ad00ea43617fcf20670516b054ed1a','31536000','1291740000'),(5,'tester1','1db38007dda78dea760d9d4a81ca4b28','31536000','1291811246');
 
 /*Table structure for table `setting` */
 
