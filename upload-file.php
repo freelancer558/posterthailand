@@ -1,5 +1,5 @@
 <?php
-$uploaddir = './uploads/'; 
+$uploaddir = 'uploads/'; 
 $ext = substr($_FILES['uploadfile']['name'],strpos($_FILES['uploadfile']['name'],'.'));
 $filename = $_FILES['uploadfile']['name']=time().$ext;
 $file = $uploaddir . basename($filename); 
