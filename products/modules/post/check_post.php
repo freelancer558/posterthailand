@@ -53,11 +53,22 @@ function initialize() { // ฟังก์ชันแสดงแผนที�
 		position: my_Latlng,  // กำหนดไว้ที่เดียวกับจุดกึ่งกลาง
 		map: map, // กำหนดว่า marker นี้ใช้กับแผนที่ชื่อ instance ว่า map
 //		draggable:true, // กำหนดให้สามารถลากตัว marker นี้ได้
-		title:'<?php echo $_POST['topic'];?> '// แสดง title เมื่อเอาเมาส์มาอยู่เหนือ
+		title:'<?php echo $_POST['topic'];?>'
 	});
     
 	infowindow = new GGM.InfoWindow({
-		content:''
+		content:'<?php 
+					echo $_POST['topic'].'<br/>';
+		            echo 'ชื่อผู้ลงประกาศ :'.$_POST['poster_name'].'<br/>';
+			        echo 'ชื่อร้าน / บริษัท :'.$_POST['store_name'].'<br/>';
+			        echo 'ที่อยู่ :'.$_POST['address'].'<br/>';
+			        echo 'ตำบล/แขวง :'.$_POST['tumbon'].'<br/>';
+			        echo 'อำเภอ/เขต :'.$_POST['amphur'].'<br/>';
+			        echo 'จังหวัด :'.$_POST['province'].'<br/>';
+			        echo 'มือถือ :'.$_POST['mobile'].'<br/>';
+			        echo 'เบอร์ร้าน :'.$_POST['tel'].'<br/>';
+			        echo 'อีเมล์ :'.$_SESSION['email'];
+			    ?>'
 	});
 	
 	// กำหนด event ให้กับตัว marker เมื่อคลิกที่ตัว marker ให้แสดง infowindows
@@ -206,7 +217,7 @@ $(function(){
                     <div id="sub_title">ติดต่อเจ้าของสินค้า</div>
                     <div class="clear"></div>
                     	<div id="show_detail" style="float:left; padding:5px;">
-                            <div id="pdetail"><div>ชื่อผู้ติดต่อ :</div> <?php echo $_POST['poster_name'];?></div>
+                            <div id="pdetail"><div>ชื่อผู้ลงประกาศ :</div> <?php echo $_POST['poster_name'];?></div>
                             <div id="pdetail"><div>ชื่อร้าน / บริษัท :</div><?php echo $_POST['store_name'];?></div>
                             <div id="pdetail"><div>ที่อยู่ :</div> <?php echo $_POST['address'];?></div>
                             <div id="pdetail"><div>ตำบล/แขวง :</div> <?php echo $_POST['tumbon'];?></div>

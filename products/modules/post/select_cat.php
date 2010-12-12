@@ -859,6 +859,7 @@ $(function(){
               	        </tbody>
               	    </table>
                 	</form>
+                	<a class="btn" href="http://www.think.co.th/think/?page_id=118"><span>ลงประกาศ</span></a>
                 <?php
 				}
 				?>

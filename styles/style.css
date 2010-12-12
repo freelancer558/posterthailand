@@ -79,14 +79,45 @@ a:hover{
 }
 
 #warning {
-	background: #FFDFE0;
-	border: 1px solid #F99;
-	color: #C41919;
-	font-size: 12px;
-	margin-bottom: 15px;
-	padding: 5px 0px;
-	text-align: center;
+	background: 			#FFDFE0;
+	border: 				1px solid #F99;
+	color: 					#C41919;
+	font-size: 				12px;
+	margin-bottom: 			15px;
+	padding: 				5px 0px;
+	text-align: 			center;
 }
+/*=================  Button =================================*/
+a.btn {
+	background: 			transparent url(images/btn-a.png) no-repeat scroll 100% 0%;
+	color: 					#444;
+	display: 				block;
+	float: 					left;
+	font-size: 				14px;
+	font-weight: 			bold;
+	height: 				48px;
+	margin-bottom: 			20px;
+	margin-right: 			15px;
+	padding-right: 			23px;
+	text-decoration: 		none;
+	text-transform: 		uppercase;
+}
+a.btn span {
+	background: 			transparent url(images/btn-span.png) no-repeat;
+	display: 				block;
+	line-height: 			14px;
+	padding: 				17px 0px 17px 23px;
+	text-shadow: 			white 1px 1px 0px;
+}
+a.btn:hover { 
+	opacity:				0.8; 
+	color: 					#111;
+	outline: 				none;
+}
+a.btn:hover span { 
+	padding: 				17px 0 17px 23px;
+} 
+
 /*================================  Header =====================================*/
 
 .header{
